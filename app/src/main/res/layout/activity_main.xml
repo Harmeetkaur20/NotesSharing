@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88f5e0"
+    tools:context="com.inception.harmeetkaur.notessharing.MainActivity">
+
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_rect"/>
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/notes"
+        android:id="@+id/notes"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/notes"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect"
+        android:textSize="30dp"
+        android:hint="Enter Email"
+        android:maxLines="1"
+        android:imeOptions="actionNext"
+        android:id="@+id/email"/>
+</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect"
+                android:textSize="30dp"
+                android:imeOptions="actionDone"
+                android:layout_marginTop="20dp"
+                android:hint="password"
+                android:id="@+id/pass"/>
+        </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ea5280"
+            android:text="LOG IN"
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"
+            android:layout_marginHorizontal="150dp"
+            android:onClick="log_in"
+            />
+    </LinearLayout>
+
+</RelativeLayout>
