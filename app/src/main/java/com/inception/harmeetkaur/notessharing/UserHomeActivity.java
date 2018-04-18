@@ -20,7 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.inception.harmeetkaur.notessharing.datamodels.notes_details_data;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserHomeActivity extends AppCompatActivity {
     RecyclerView recyclerView ;
@@ -59,7 +61,9 @@ public class UserHomeActivity extends AppCompatActivity {
                     for (DataSnapshot snap2 : snap.getChildren()) {
                         notes_details_data data = snap2.getValue(notes_details_data.class);
 
-                        notes_list.add(data);
+                        notes_details_data data_with_time = new notes_details_data(data.title , data.description ,data.department ,data.session , data.type , snap2.getKey());
+                        notes_list.add(data_with_time);
+
                     }
                 }
 
@@ -136,6 +140,8 @@ public class UserHomeActivity extends AppCompatActivity {
             holder.notes_title.setText(data.title);
 
             holder.notes_description.setText(data.description);
+
+            holder.time.setText(convertTime(Long.parseLong(data.time)));
         }
 
         @Override
@@ -178,5 +184,14 @@ public class UserHomeActivity extends AppCompatActivity {
 
         startActivity(i);
 
+    }
+
+    public String convertTime(long yourmilliseconds)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+        Date resultdate = new Date(yourmilliseconds);
+        System.out.println(sdf.format(resultdate));
+
+        return String.valueOf(sdf.format(resultdate));
     }
 }

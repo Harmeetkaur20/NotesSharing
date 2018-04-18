@@ -1,6 +1,8 @@
 package com.inception.harmeetkaur.notessharing;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,28 +21,40 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.inception.harmeetkaur.notessharing.datamodels.notes_details_data;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AdminHomepage extends AppCompatActivity {
+
     RecyclerView recyclerView;
 
     ArrayList<notes_details_data> notes_list;
+
+    ProgressDialog pd ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_homepage);
+
+        pd = new ProgressDialog(AdminHomepage.this);
+
+        pd.setTitle("Loading");
+        pd.setMessage("Please Wait..");
+        pd.show();
+
         notes_list = new ArrayList<>();
 
         recyclerView = findViewById(R.id.notes_me_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(AdminHomepage.this , LinearLayoutManager.VERTICAL , false));
 
-        get_department();
+        get_data_from_firebase();
 
     }
 
-    private void get_data_from_firebase( String department_name )
+    private void get_data_from_firebase( )
     {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -48,25 +62,30 @@ public class AdminHomepage extends AppCompatActivity {
 
         String email = auth.getCurrentUser().getEmail();
 
-        database.getReference().child("notes").child(department_name).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("notes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                for(DataSnapshot snap0 : dataSnapshot.getChildren()) {
 
-                for (DataSnapshot snap : dataSnapshot.getChildren())
-                {
-                    for (DataSnapshot snap2 : snap.getChildren()) {
-                        notes_details_data data = snap2.getValue(notes_details_data.class);
+                    for (DataSnapshot snap : snap0.getChildren()) {
+                        for (DataSnapshot snap2 : snap.getChildren()) {
+                            notes_details_data data = snap2.getValue(notes_details_data.class);
 
-                        notes_list.add(data);
+                            notes_details_data data_with_time = new notes_details_data(data.title, data.description, data.department, data.session, data.type, snap2.getKey());
+                            notes_list.add(data_with_time);
+                        }
                     }
                 }
+
+                pd.hide();
 
                 recyclerView.setAdapter(new Adapter());
 
             }
 
             @Override
+
             public void onCancelled(DatabaseError databaseError) {
 
             }
@@ -74,31 +93,9 @@ public class AdminHomepage extends AppCompatActivity {
     }
 
 
-    private void get_department()
-    {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        String email =  auth.getCurrentUser().getEmail();
 
-        database.getReference().child("users").child(email.replace(".","")).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                String departmentSession =  dataSnapshot.child("department").getValue().toString()+"_"+dataSnapshot.child("session").getValue().toString();
-
-                get_data_from_firebase(departmentSession);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 
     public void notes_added(View view) {
         Intent i = new Intent(AdminHomepage.this,notes_uploadedbyadmin.class);
@@ -109,7 +106,7 @@ public class AdminHomepage extends AppCompatActivity {
     public class view_holder extends RecyclerView.ViewHolder
     {
 
-        TextView notes_title , notes_description , time ;
+        TextView notes_title , notes_description , time , department , session ;
 
         public view_holder(View itemView) {
             super(itemView);
@@ -119,6 +116,10 @@ public class AdminHomepage extends AppCompatActivity {
             notes_description = itemView.findViewById(R.id.notes_description);
 
             time = itemView.findViewById(R.id.notes_date);
+
+            department = itemView.findViewById(R.id.notes_department);
+
+            session = itemView.findViewById(R.id.notes_session);
         }
     }
 
@@ -128,7 +129,7 @@ public class AdminHomepage extends AppCompatActivity {
 
         @Override
         public view_holder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new view_holder(LayoutInflater.from(AdminHomepage.this).inflate(R.layout.single_notes_cell , parent , false));
+            return new view_holder(LayoutInflater.from(AdminHomepage.this).inflate(R.layout.single_notes_cell_admin , parent , false));
         }
 
         @Override
@@ -140,6 +141,12 @@ public class AdminHomepage extends AppCompatActivity {
             holder.notes_title.setText(data.title);
 
             holder.notes_description.setText(data.description);
+
+            holder.time.setText(convertTime(Long.parseLong(data.time)));
+
+            holder.department.setText(data.department);
+
+            holder.session.setText(data.session);
         }
 
         @Override
@@ -158,5 +165,15 @@ public class AdminHomepage extends AppCompatActivity {
     public void move_next1(View view) {
         DrawerLayout drawerLayout = findViewById(R.id.drawer);
         drawerLayout.openDrawer(Gravity.LEFT);
+    }
+
+
+    public String convertTime(long yourmilliseconds)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+        Date resultdate = new Date(yourmilliseconds);
+        System.out.println(sdf.format(resultdate));
+
+        return String.valueOf(sdf.format(resultdate));
     }
 }

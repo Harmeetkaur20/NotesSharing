@@ -6,7 +6,7 @@ package com.inception.harmeetkaur.notessharing.datamodels;
 
 public class notes_details_data {
 
-  public    String title , description , department , session , type ;
+  public    String title , description , department , session , type , time ;
 
 
   public   notes_details_data()
@@ -25,5 +25,20 @@ public class notes_details_data {
         this.session = session ;
 
         this.type = type ;
+    }
+
+    public notes_details_data(String title , String description , String department , String session , String type , String time)
+    {
+        this.title = title;
+
+        this.description = description;
+
+        this.department = department;
+
+        this.session = session ;
+
+        this.type = type ;
+
+        this.time = time ;
     }
 }

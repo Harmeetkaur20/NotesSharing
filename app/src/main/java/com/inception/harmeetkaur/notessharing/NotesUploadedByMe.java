@@ -97,6 +97,14 @@ public class NotesUploadedByMe extends AppCompatActivity {
 
     }
 
+    public void move_back1(View view) {
+        finish();
+    }
+
+    public void move_back3(View view) {
+        finish();
+    }
+
 
     public class view_holder extends RecyclerView.ViewHolder
     {

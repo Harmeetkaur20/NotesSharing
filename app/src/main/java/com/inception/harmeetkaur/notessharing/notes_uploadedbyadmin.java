@@ -50,7 +50,7 @@ public class notes_uploadedbyadmin extends AppCompatActivity {
 
         String email = auth.getCurrentUser().getEmail();
 
-        database.getReference().child("notes").child(department_name).child("    harmeet@gmailcom").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("notes").child(department_name).child("harmeet@gmailcom").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -98,6 +98,14 @@ public class notes_uploadedbyadmin extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void move_back2(View view) {
+        finish();
+    }
+
+    public void move_back(View view) {
+        finish();
     }
 
 
