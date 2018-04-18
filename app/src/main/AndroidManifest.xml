@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.inception.harmeetkaur.notessharing">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,14 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".logo_page">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".cover_page" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".join_login" />
+        <activity android:name=".Details" />
+        <activity android:name=".sign_up3" />
+        <activity android:name=".UserLoginActivity" />
+        <activity android:name=".UserHomeActivity" />
+        <activity android:name=".Edit_profile" />
+        <activity android:name=".feedback" />
+        <activity android:name=".Join_1" />
+        <activity android:name=".Adding_notes" />
+        <activity android:name=".ContinueOptions" />
+        <activity android:name=".AdminLogin" />
+        <activity android:name=".uploading_images" />
+        <activity android:name=".NotesUploadedByMe" />
+        <activity android:name=".AdminHomepage" />
+        <activity android:name=".Admin_addingnotes" />
+        <activity android:name=".notes_uploadedbyadmin"></activity>
     </application>
 
 </manifest>
