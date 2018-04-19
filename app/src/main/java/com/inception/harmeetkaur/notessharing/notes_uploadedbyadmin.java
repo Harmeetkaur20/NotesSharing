@@ -50,16 +50,27 @@ public class notes_uploadedbyadmin extends AppCompatActivity {
 
         String email = auth.getCurrentUser().getEmail();
 
-        database.getReference().child("notes").child(department_name).child("harmeet@gmailcom").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("notes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
 
                 for (DataSnapshot snap : dataSnapshot.getChildren())
                 {
-                    notes_details_data data = snap.getValue(notes_details_data.class);
 
-                    notes_list.add(data);
+                    for(DataSnapshot snap2 : snap.getChildren())
+                    {
+
+                        if(snap2.getKey().equals("harmeet@gmailcom"))
+                        {
+                            for(DataSnapshot snap3 : snap2.getChildren())
+                            {
+                                notes_details_data data = snap3.getValue(notes_details_data.class);
+                                notes_list.add(data);
+                            }
+                        }
+                    }
+
                 }
 
                 recyclerView.setAdapter(new Adapter());

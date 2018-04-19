@@ -136,7 +136,7 @@ public class AdminHomepage extends AppCompatActivity {
         public void onBindViewHolder(AdminHomepage.view_holder holder, int position) {
 
 
-            notes_details_data data = notes_list.get(position);
+            final notes_details_data data = notes_list.get(position);
 
             holder.notes_title.setText(data.title);
 
@@ -147,6 +147,18 @@ public class AdminHomepage extends AppCompatActivity {
             holder.department.setText(data.department);
 
             holder.session.setText(data.session);
+
+            holder.notes_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent i = new Intent(AdminHomepage.this , Show_images_notes.class);
+
+                    i.putExtra("images_key" , data.time);
+
+                    startActivity(i);
+                }
+            });
         }
 
         @Override

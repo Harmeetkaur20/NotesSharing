@@ -35,7 +35,8 @@
         <activity android:name=".NotesUploadedByMe" />
         <activity android:name=".AdminHomepage" />
         <activity android:name=".Admin_addingnotes" />
-        <activity android:name=".notes_uploadedbyadmin"></activity>
+        <activity android:name=".notes_uploadedbyadmin" />
+        <activity android:name=".Show_images_notes"></activity>
     </application>
 
 </manifest>
