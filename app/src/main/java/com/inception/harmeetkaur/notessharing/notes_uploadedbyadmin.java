@@ -157,7 +157,8 @@ public class notes_uploadedbyadmin extends AppCompatActivity {
         }
 
         @Override
-        public int getItemCount() {
+        public int getItemCount()
+        {
             return notes_list.size();
         }
     }

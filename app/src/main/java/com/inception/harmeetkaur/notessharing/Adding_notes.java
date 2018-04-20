@@ -20,6 +20,7 @@ public class Adding_notes extends AppCompatActivity {
 
     EditText department_et , session_et , title_et , description_et  ;
 
+    RadioGroup select_notes_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -91,11 +92,23 @@ public class Adding_notes extends AppCompatActivity {
 
         database.getReference().child("notes").child(department+"_"+session).child(email.replace(".","")).child(String.valueOf(current_time)).setValue(data);
 
-        Intent i = new Intent(Adding_notes.this,uploading_images.class);
+        if(type.equals("PDF"))
+        {
+            Intent i = new Intent(Adding_notes.this,uploading_pdf_files.class);
 
-        i.putExtra("current_time" , current_time);
+            i.putExtra("current_time" , current_time);
 
-        startActivity(i);
+            startActivity(i);
+        }
+
+        if(type.equals("IMAGE"))
+        {
+            Intent i = new Intent(Adding_notes.this,uploading_images.class);
+
+            i.putExtra("current_time" , current_time);
+
+            startActivity(i);
+        }
 
 
 

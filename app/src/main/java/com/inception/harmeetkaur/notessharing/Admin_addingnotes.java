@@ -19,10 +19,14 @@ public class Admin_addingnotes extends AppCompatActivity {
 
     EditText  title_et , description_et  ;
 
+    RadioGroup select_notes_type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_addingnotes);
+
+        select_notes_type = findViewById(R.id.select_notes_type);
 
         title_et = findViewById(R.id.title);
         description_et = findViewById(R.id.description);
@@ -79,11 +83,26 @@ public class Admin_addingnotes extends AppCompatActivity {
 
         database.getReference().child("notes").child(department+"_"+session).child("harmeet@gmailcom").child(String.valueOf(current_time)).setValue(data);
 
-        Intent i = new Intent(Admin_addingnotes.this,uploading_images.class);
 
-        i.putExtra("current_time" , current_time);
+        if(type.equals("PDF"))
+        {
+            Intent i = new Intent(Admin_addingnotes.this,uploading_pdf_files.class);
 
-        startActivity(i);
+            i.putExtra("current_time" , current_time);
+
+            startActivity(i);
+        }
+
+        if(type.equals("IMAGE"))
+        {
+            Intent i = new Intent(Admin_addingnotes.this,uploading_images.class);
+
+            i.putExtra("current_time" , current_time);
+
+            startActivity(i);
+        }
+
+
 
 
 
