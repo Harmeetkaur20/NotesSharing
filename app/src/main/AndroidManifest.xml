@@ -3,10 +3,8 @@
     package="com.inception.harmeetkaur.notessharing">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -41,7 +39,8 @@
         <activity android:name=".Admin_addingnotes" />
         <activity android:name=".notes_uploadedbyadmin" />
         <activity android:name=".Show_images_notes" />
-        <activity android:name=".uploading_pdf_files"></activity>
+        <activity android:name=".uploading_pdf_files" />
+        <activity android:name=".UploadVideoActivity"></activity>
     </application>
 
 </manifest>

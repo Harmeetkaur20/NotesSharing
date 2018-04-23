@@ -12,7 +12,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -72,7 +74,7 @@ public class AdminHomepage extends AppCompatActivity {
                         for (DataSnapshot snap2 : snap.getChildren()) {
                             notes_details_data data = snap2.getValue(notes_details_data.class);
 
-                            notes_details_data data_with_time = new notes_details_data(data.title, data.description, data.department, data.session, data.type, snap2.getKey());
+                            notes_details_data data_with_time = new notes_details_data(data.title, data.description, data.department, data.session, data.type, snap2.getKey() , data.status , snap.getKey());
                             notes_list.add(data_with_time);
                         }
                     }
@@ -102,11 +104,18 @@ public class AdminHomepage extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void logout(View view) {
+        Intent i = new Intent(AdminHomepage.this,AdminLogin.class);
+        startActivity(i);
+    }
+
 
     public class view_holder extends RecyclerView.ViewHolder
     {
 
-        TextView notes_title , notes_description , time , department , session ;
+        TextView notes_title , notes_description , time , department , session , user_email ;
+
+        Button approve_notes ;
 
         public view_holder(View itemView) {
             super(itemView);
@@ -120,6 +129,10 @@ public class AdminHomepage extends AppCompatActivity {
             department = itemView.findViewById(R.id.notes_department);
 
             session = itemView.findViewById(R.id.notes_session);
+
+            approve_notes = itemView.findViewById(R.id.approve_btn);
+
+            user_email = itemView.findViewById(R.id.user_email);
         }
     }
 
@@ -133,7 +146,7 @@ public class AdminHomepage extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(AdminHomepage.view_holder holder, int position) {
+        public void onBindViewHolder(final AdminHomepage.view_holder holder, int position) {
 
 
             final notes_details_data data = notes_list.get(position);
@@ -148,6 +161,9 @@ public class AdminHomepage extends AppCompatActivity {
 
             holder.session.setText(data.session);
 
+            holder.user_email.setText(data.email);
+
+
             holder.notes_title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -157,6 +173,42 @@ public class AdminHomepage extends AppCompatActivity {
                     i.putExtra("images_key" , data.time);
 
                     startActivity(i);
+                }
+            });
+
+            if(data.status.equals("a"))
+            {
+                holder.approve_notes.setText("DELETE");
+            }
+
+            else
+            {
+                holder.approve_notes.setText("APPROVE");
+            }
+            holder.approve_notes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(holder.approve_notes.getText().toString().toLowerCase().equals("delete"))
+                    {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                        database.getReference().child("notes").child(data.department + "_" + data.session).child(data.email.replace(".", "")).child(data.time).setValue(null);
+
+                        Toast.makeText(AdminHomepage.this, "notes deleted", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else {
+                        notes_details_data dat = new notes_details_data(data.title, data.description, data.department, data.session, data.type, "a");
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                        database.getReference().child("notes").child(data.department + "_" + data.session).child(data.email.replace(".", "")).child(data.time).setValue(dat);
+
+                        Toast.makeText(AdminHomepage.this, "notes approved", Toast.LENGTH_SHORT).show();
+
+                        holder.approve_notes.setText("DELETE");
+                    }
                 }
             });
         }

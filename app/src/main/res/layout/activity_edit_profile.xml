@@ -63,26 +63,14 @@
         android:enabled="false"
         android:id="@+id/session"
         android:background="@drawable/rounded_rect"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Contact No."
-        android:layout_below="@id/session"
-        android:layout_marginTop="20dp"
-        android:padding="5dp"
-        android:singleLine="true"
-        android:maxLines="1"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:id="@+id/cont_no"
-        android:background="@drawable/rounded_rect"/>
+
     <Button
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="DONE"
         android:textColor="#fff"
         android:textStyle="bold"
-        android:layout_below="@id/cont_no"
+        android:layout_below="@id/session"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:background="#1f2b78"

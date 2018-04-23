@@ -79,30 +79,7 @@
             android:textAlignment="center"
             android:onClick="notes_added"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rectangle"
-            android:text="APPROVE NOTES"
-            android:padding="5dp"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:textAlignment="center"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rectangle"
-            android:text="DELETE NOTES "
-            android:padding="5dp"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:textAlignment="center"
-            />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

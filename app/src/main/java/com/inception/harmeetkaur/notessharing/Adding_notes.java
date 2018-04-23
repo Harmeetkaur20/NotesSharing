@@ -80,7 +80,7 @@ public class Adding_notes extends AppCompatActivity {
 
         String type = selected_radio_btn.getText().toString();
 
-        notes_details_data data = new notes_details_data(title , description , department , session , type);
+        notes_details_data data = new notes_details_data(title , description , department , session , type , "u");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 

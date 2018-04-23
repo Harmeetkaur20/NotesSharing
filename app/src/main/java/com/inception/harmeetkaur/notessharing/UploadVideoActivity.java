@@ -1,13 +1,11 @@
 package com.inception.harmeetkaur.notessharing;
 
 import android.*;
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,10 +26,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.inception.harmeetkaur.notessharing.datamodels.Upload;
 
-public class uploading_pdf_files extends AppCompatActivity implements View.OnClickListener {
+public class UploadVideoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //this is the pic pdf code used in file chooser
-    final static int PICK_PDF_CODE = 2342;
+
+    final static int PICK_VIDEO_CODE = 2342;
 
     //these are the views
     TextView textViewStatus;
@@ -46,8 +44,7 @@ public class uploading_pdf_files extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_uploading_pdf_files);
-
+        setContentView(R.layout.activity_upload_video);
 
         //getting firebase objects
         mStorageReference = FirebaseStorage.getInstance().getReference();
@@ -60,15 +57,14 @@ public class uploading_pdf_files extends AppCompatActivity implements View.OnCli
 
         //attaching listeners to views
         findViewById(R.id.buttonUploadFile).setOnClickListener(this);
-
     }
 
     //this function will get the pdf from the storage
-    private void getPDF() {
+    private void getVIDEO() {
         //for greater than lolipop versions we need the permissions asked on runtime
         //so if the permission is not available user will go to the screen to allow storage permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                     Uri.parse("package:" + getPackageName()));
@@ -78,9 +74,10 @@ public class uploading_pdf_files extends AppCompatActivity implements View.OnCli
 
         //creating an intent for file chooser
         Intent intent = new Intent();
-        intent.setType("application/pdf");
+        intent.setType("video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PDF_CODE);
+        startActivityForResult(Intent.createChooser(intent,"Select Video"),PICK_VIDEO_CODE);
+
     }
 
 
@@ -88,14 +85,13 @@ public class uploading_pdf_files extends AppCompatActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //when the user choses the file
-        if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            //if a file is selected
-            if (data.getData() != null) {
-                //uploading the file
-                uploadFile(data.getData());
-            }else{
-                Toast.makeText(this, "No file chosen", Toast.LENGTH_SHORT).show();
-            }
+        if(resultCode==RESULT_CANCELED)
+        {
+            // action cancelled
+        }
+        if(resultCode==RESULT_OK)
+        {
+           uploadFile(data.getData());
         }
     }
 
@@ -105,33 +101,30 @@ public class uploading_pdf_files extends AppCompatActivity implements View.OnCli
     //so we are not explaining it
     private void uploadFile(Uri data) {
         progressBar.setVisibility(View.VISIBLE);
-        StorageReference sRef = mStorageReference.child("pdf").child(System.currentTimeMillis() + ".pdf");
-        sRef.putFile(data)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @SuppressWarnings("VisibleForTests")
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressBar.setVisibility(View.GONE);
-                        textViewStatus.setText("File Uploaded Successfully");
 
-                        Upload upload = new Upload(editTextFilename.getText().toString(), taskSnapshot.getDownloadUrl().toString());
-                        mDatabaseReference.child("pdf_urls").child(String.valueOf(getIntent().getLongExtra("current_time",0))).setValue(upload);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @SuppressWarnings("VisibleForTests")
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                        textViewStatus.setText((int) progress + "% Uploading...");
-                    }
-                });
+            // Create a storage reference from our app
+            StorageReference storageRef = mStorageReference;
+
+            StorageReference riversRef = storageRef.child("files/"+data.getLastPathSegment());
+            UploadTask uploadTask = riversRef.putFile(data);
+
+            // Register observers to listen for when the download is done or if it fails
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+
+                    Toast.makeText(UploadVideoActivity.this, "Upload Failed", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+
+                    Toast.makeText(UploadVideoActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
+                }
+            });
+
 
     }
 
@@ -139,7 +132,7 @@ public class uploading_pdf_files extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonUploadFile:
-                getPDF();
+                getVIDEO();
                 break;
 
         }

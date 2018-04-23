@@ -69,7 +69,7 @@ public class Admin_addingnotes extends AppCompatActivity {
 
         String type = selected_radio_btn.getText().toString();
 
-        notes_details_data data = new notes_details_data(title , description , department , session , type);
+        notes_details_data data = new notes_details_data(title , description , department , session , type , "a");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -101,6 +101,17 @@ public class Admin_addingnotes extends AppCompatActivity {
 
             startActivity(i);
         }
+
+        if(type.equals("VIDEO"))
+        {
+            Intent i = new Intent(Admin_addingnotes.this,UploadVideoActivity.class);
+
+            i.putExtra("current_time" , current_time);
+
+            startActivity(i);
+        }
+
+
 
 
 

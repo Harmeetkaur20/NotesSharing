@@ -59,10 +59,14 @@ public class UserHomeActivity extends AppCompatActivity {
                 for (DataSnapshot snap : dataSnapshot.getChildren())
                 {
                     for (DataSnapshot snap2 : snap.getChildren()) {
+
                         notes_details_data data = snap2.getValue(notes_details_data.class);
 
-                        notes_details_data data_with_time = new notes_details_data(data.title , data.description ,data.department ,data.session , data.type , snap2.getKey());
-                        notes_list.add(data_with_time);
+                        if(data.status.equals("a"))
+                        {
+                            notes_details_data data_with_time = new notes_details_data(data.title, data.description, data.department, data.session, data.type, snap2.getKey(), data.status);
+                            notes_list.add(data_with_time);
+                        }
 
                     }
                 }
@@ -132,7 +136,8 @@ public class UserHomeActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(view_holder holder, int position) {
+        public void onBindViewHolder(view_holder holder, int position)
+        {
 
 
             final notes_details_data data = notes_list.get(position);
