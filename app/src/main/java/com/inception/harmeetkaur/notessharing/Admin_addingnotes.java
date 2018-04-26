@@ -16,9 +16,7 @@ import com.inception.harmeetkaur.notessharing.datamodels.notes_details_data;
 
 public class Admin_addingnotes extends AppCompatActivity {
     private Spinner department_spinner , session_spinner ;
-
     EditText  title_et , description_et  ;
-
     RadioGroup select_notes_type;
 
     @Override
@@ -91,6 +89,7 @@ public class Admin_addingnotes extends AppCompatActivity {
             i.putExtra("current_time" , current_time);
 
             startActivity(i);
+            finish();
         }
 
         if(type.equals("IMAGE"))
@@ -100,6 +99,7 @@ public class Admin_addingnotes extends AppCompatActivity {
             i.putExtra("current_time" , current_time);
 
             startActivity(i);
+            finish();
         }
 
         if(type.equals("VIDEO"))
@@ -109,6 +109,7 @@ public class Admin_addingnotes extends AppCompatActivity {
             i.putExtra("current_time" , current_time);
 
             startActivity(i);
+            finish();
         }
 
 

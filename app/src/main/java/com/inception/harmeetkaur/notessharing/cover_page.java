@@ -2,6 +2,7 @@ package com.inception.harmeetkaur.notessharing;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,29 @@ public class cover_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cover_page);
+
+
+        SharedPreferences sp_editor = getSharedPreferences("app_info" , MODE_PRIVATE);
+
+
+
+        if(sp_editor.getString("user_type" , "").equals("admin"))
+        {
+            Intent i = new Intent(cover_page.this , AdminHomepage.class);
+
+            startActivity(i);
+
+        }
+
+        else if(sp_editor.getString("user_type" , "").equals("user")) {
+
+            Intent i = new Intent(cover_page.this , UserHomeActivity.class);
+
+            startActivity(i);
+
+        }
+
+
     }
 
     public void create(View view) {

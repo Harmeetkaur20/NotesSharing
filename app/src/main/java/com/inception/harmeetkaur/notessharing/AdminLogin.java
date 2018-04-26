@@ -2,6 +2,7 @@ package com.inception.harmeetkaur.notessharing;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,9 +52,17 @@ public class AdminLogin extends AppCompatActivity {
 
         if(email.equals("harmeet@gmail.com") && password.equals("123456789"))
         {
+            SharedPreferences.Editor sp_editor = getSharedPreferences("app_info" , MODE_PRIVATE).edit();
+
+            sp_editor.putString("user_type" , "admin");
+
+            sp_editor.commit();
+
             Intent i = new Intent(AdminLogin.this , AdminHomepage.class);
 
             startActivity(i);
+
+            finish();
         }
 
       /*  FirebaseAuth f_auth = FirebaseAuth.getInstance();

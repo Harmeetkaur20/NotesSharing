@@ -6,7 +6,7 @@ package com.inception.harmeetkaur.notessharing.datamodels;
 
 public class user_profile_data {
 
-    String name , department , session;
+    public String name , department , session;
 
 
     public user_profile_data()

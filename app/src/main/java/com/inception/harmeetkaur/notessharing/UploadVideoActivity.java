@@ -102,6 +102,8 @@ public class UploadVideoActivity extends AppCompatActivity implements View.OnCli
     private void uploadFile(Uri data) {
         progressBar.setVisibility(View.VISIBLE);
 
+
+
             // Create a storage reference from our app
             StorageReference storageRef = mStorageReference;
 
@@ -121,7 +123,20 @@ public class UploadVideoActivity extends AppCompatActivity implements View.OnCli
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
 
+                    Upload upload = new Upload(editTextFilename.getText().toString(), taskSnapshot.getDownloadUrl().toString());
+                    mDatabaseReference.child("video_urls").child(String.valueOf(getIntent().getLongExtra("current_time",0))).setValue(upload);
+
+                    textViewStatus.setText("File uploaded successfully");
                     Toast.makeText(UploadVideoActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
+
+                    finish();
+                }
+            }) .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @SuppressWarnings("VisibleForTests")
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    textViewStatus.setText((int) progress + "% Uploading...");
                 }
             });
 

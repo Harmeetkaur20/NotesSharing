@@ -92,6 +92,8 @@ public class uploading_images extends AppCompatActivity {
 
                 final ArrayList<String> images_url = new ArrayList<>();
 
+                final int[] count = {0};
+
                 for(int i = 0; i < totalItemsSelected; i++){
 
                     Uri fileUri = data.getClipData().getItemAt(i).getUri();
@@ -106,24 +108,29 @@ public class uploading_images extends AppCompatActivity {
 
                     StorageReference fileToUpload = mStorage.child("Images").child(String.valueOf(currentTime)).child(fileName);
 
-                    final int finalI = i;
+
 
                     fileToUpload.putFile(fileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            fileDoneList.remove(finalI);
-                            fileDoneList.add(finalI, "done");
+
+
+                            fileDoneList.remove(count[0]);
+                            fileDoneList.add(count[0], "done");
 
                             uploadListAdapter.notifyDataSetChanged();
 
                            images_url.add(String.valueOf(taskSnapshot.getDownloadUrl())) ;
 
-                           if( finalI == totalItemsSelected - 1)
+                            count[0]++;
+
+                           if( count[0] == totalItemsSelected)
                            {
                                FirebaseDatabase database = FirebaseDatabase.getInstance();
 
                                String url = "";
+
                                for(int j = 0 ; j < totalItemsSelected ; j ++)
                                {
                                    url = url +","+ images_url.get(j);
@@ -136,6 +143,8 @@ public class uploading_images extends AppCompatActivity {
                                    public void onComplete(@NonNull Task<Void> task) {
 
                                        Toast.makeText(uploading_images.this, "Done", Toast.LENGTH_SHORT).show();
+
+                                       finish();
 
                                    }
                                });

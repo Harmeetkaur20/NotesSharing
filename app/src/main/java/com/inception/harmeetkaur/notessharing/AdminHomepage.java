@@ -2,6 +2,7 @@ package com.inception.harmeetkaur.notessharing;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +53,7 @@ public class AdminHomepage extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(AdminHomepage.this , LinearLayoutManager.VERTICAL , false));
 
-        get_data_from_firebase();
+
 
     }
 
@@ -67,6 +68,8 @@ public class AdminHomepage extends AppCompatActivity {
         database.getReference().child("notes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                notes_list.clear();
 
                 for(DataSnapshot snap0 : dataSnapshot.getChildren()) {
 
@@ -105,8 +108,15 @@ public class AdminHomepage extends AppCompatActivity {
     }
 
     public void logout(View view) {
+
+        SharedPreferences.Editor sp_editor = getSharedPreferences("app_info" , MODE_PRIVATE).edit();
+
+        sp_editor.clear().commit();
+
         Intent i = new Intent(AdminHomepage.this,AdminLogin.class);
         startActivity(i);
+
+        finish();
     }
 
 
@@ -168,11 +178,32 @@ public class AdminHomepage extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    Intent i = new Intent(AdminHomepage.this , Show_images_notes.class);
+                    if(data.type.equals("IMAGE"))
+                    {
+                        Intent i = new Intent(AdminHomepage.this, Show_images_notes.class);
 
-                    i.putExtra("images_key" , data.time);
+                        i.putExtra("images_key", data.time);
 
-                    startActivity(i);
+                        startActivity(i);
+                    }
+
+                    if(data.type.equals("PDF"))
+                    {
+                        Intent i = new Intent(AdminHomepage.this , ShowPdfActivity.class);
+
+                        i.putExtra("images_key" , data.time);
+
+                        startActivity(i);
+                    }
+
+                    if(data.type.equals("VIDEO"))
+                    {
+                        Intent i = new Intent(AdminHomepage.this , ShowVideoActivity.class);
+
+                        i.putExtra("images_key" , data.time);
+
+                        startActivity(i);
+                    }
                 }
             });
 
@@ -239,5 +270,12 @@ public class AdminHomepage extends AppCompatActivity {
         System.out.println(sdf.format(resultdate));
 
         return String.valueOf(sdf.format(resultdate));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        get_data_from_firebase();
     }
 }

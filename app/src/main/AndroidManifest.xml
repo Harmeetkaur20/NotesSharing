@@ -40,7 +40,10 @@
         <activity android:name=".notes_uploadedbyadmin" />
         <activity android:name=".Show_images_notes" />
         <activity android:name=".uploading_pdf_files" />
-        <activity android:name=".UploadVideoActivity"></activity>
+        <activity android:name=".UploadVideoActivity" />
+        <activity android:name=".ShowPdfActivity" />
+        <activity android:name=".ShowVideoActivity" />
+        <activity android:name=".Search_activity"></activity>
     </application>
 
 </manifest>

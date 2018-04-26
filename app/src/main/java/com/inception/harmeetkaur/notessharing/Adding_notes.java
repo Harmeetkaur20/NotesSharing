@@ -92,6 +92,7 @@ public class Adding_notes extends AppCompatActivity {
 
         database.getReference().child("notes").child(department+"_"+session).child(email.replace(".","")).child(String.valueOf(current_time)).setValue(data);
 
+
         if(type.equals("PDF"))
         {
             Intent i = new Intent(Adding_notes.this,uploading_pdf_files.class);
@@ -99,6 +100,7 @@ public class Adding_notes extends AppCompatActivity {
             i.putExtra("current_time" , current_time);
 
             startActivity(i);
+            finish();
         }
 
         if(type.equals("IMAGE"))
@@ -108,7 +110,22 @@ public class Adding_notes extends AppCompatActivity {
             i.putExtra("current_time" , current_time);
 
             startActivity(i);
+            finish();
         }
+
+        if(type.equals("VIDEO"))
+        {
+            Intent i = new Intent(Adding_notes.this,UploadVideoActivity.class);
+
+            i.putExtra("current_time" , current_time);
+
+            startActivity(i);
+            finish();
+        }
+
+
+
+
 
 
 

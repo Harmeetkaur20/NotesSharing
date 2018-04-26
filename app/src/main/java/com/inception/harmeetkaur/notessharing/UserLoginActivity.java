@@ -2,6 +2,7 @@ package com.inception.harmeetkaur.notessharing;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,9 +59,17 @@ public class UserLoginActivity extends AppCompatActivity {
                 if (task.isSuccessful())
 
                 {
+                    SharedPreferences.Editor sp_editor = getSharedPreferences("app_info" , MODE_PRIVATE).edit();
+
+                    sp_editor.putString("user_type" , "user");
+
+                    sp_editor.commit();
+
                     Toast.makeText(UserLoginActivity.this, "done", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(UserLoginActivity.this , UserHomeActivity.class);
                     startActivity(i);
+
+                    finish();
                 } else {
                     Toast.makeText(UserLoginActivity.this, "error try again", Toast.LENGTH_SHORT).show();
                 }

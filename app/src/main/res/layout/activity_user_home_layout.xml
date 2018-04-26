@@ -73,6 +73,7 @@
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:textAlignment="center"
+            android:onClick="search_notes"
             />
         <TextView
             android:layout_width="match_parent"
