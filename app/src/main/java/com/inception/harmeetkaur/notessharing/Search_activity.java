@@ -100,7 +100,7 @@ public class Search_activity extends AppCompatActivity {
                         if (data.status.equals("a")) {
                             notes_details_data data_with_time = new notes_details_data(data.title, data.description, data.department, data.session, data.type, snap2.getKey(), data.status);
                             notes_list.add(data_with_time);
-                        }
+                         }
 
                     }
                 }

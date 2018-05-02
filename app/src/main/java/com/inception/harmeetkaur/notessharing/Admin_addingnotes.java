@@ -111,13 +111,6 @@ public class Admin_addingnotes extends AppCompatActivity {
             startActivity(i);
             finish();
         }
-
-
-
-
-
-
-
     }
 
 

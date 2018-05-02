@@ -119,6 +119,11 @@ public class AdminHomepage extends AppCompatActivity {
         finish();
     }
 
+    public void view_feedback(View view) {
+        Intent i = new Intent(AdminHomepage.this,feedback_admin.class);
+        startActivity(i);
+    }
+
 
     public class view_holder extends RecyclerView.ViewHolder
     {

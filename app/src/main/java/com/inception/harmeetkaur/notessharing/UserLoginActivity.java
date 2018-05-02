@@ -22,18 +22,16 @@ public class UserLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
-
-
     }
-
     public void log_in(View view) {
         EditText editText = findViewById(R.id.email);
-        EditText editText1 = findViewById(R.id.password);
+        final EditText editText1 = findViewById(R.id.password);
         String email = editText.getText().toString();
         if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 
         }
         else{
+
             Toast.makeText(UserLoginActivity.this , "invalid email syntax",Toast.LENGTH_SHORT).show();
             return;
         }
@@ -43,8 +41,8 @@ public class UserLoginActivity extends AppCompatActivity {
 
         }
         else{
-            Toast.makeText(UserLoginActivity.this,"password must be between 8 to 32 characters",Toast.LENGTH_SHORT).show();
-            return;
+            editText1.setError("password must be between 8 to 32 characters");
+                        return;
         }
         final ProgressDialog progress_bar = new ProgressDialog(UserLoginActivity.this);
         progress_bar.setTitle("please wait");
@@ -70,8 +68,7 @@ public class UserLoginActivity extends AppCompatActivity {
                     startActivity(i);
 
                     finish();
-                } else {
-                    Toast.makeText(UserLoginActivity.this, "error try again", Toast.LENGTH_SHORT).show();
+                } else {editText1.setError("Incorrect Password");
                 }
             }
         };
@@ -85,6 +82,11 @@ public class UserLoginActivity extends AppCompatActivity {
 
     public void sign_up(View view) {
         Intent i = new Intent(UserLoginActivity.this ,sign_up3.class);
+        startActivity(i);
+    }
+
+    public void forget_pass(View view) {
+        Intent i = new Intent(UserLoginActivity.this,Forget_password.class);
         startActivity(i);
     }
 }

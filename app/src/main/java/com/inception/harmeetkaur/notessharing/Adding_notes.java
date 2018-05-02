@@ -122,12 +122,5 @@ public class Adding_notes extends AppCompatActivity {
             startActivity(i);
             finish();
         }
-
-
-
-
-
-
-
     }
 }

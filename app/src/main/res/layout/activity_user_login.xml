@@ -59,7 +59,16 @@
         android:id="@+id/log_in"
         android:onClick="log_in"
         />
-
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@id/log_in"
+           android:layout_centerInParent="true"
+           android:layout_marginTop="5dp"
+           android:textColor="#000"
+           android:id="@+id/forget"
+           android:text="Forget password?"
+           android:onClick="forget_pass"/>
 
     <Button
         android:layout_width="300dp"
@@ -69,7 +78,7 @@
         android:textColor="#fff"
         android:textSize="20dp"
         android:text="NEW? sign up here !"
-        android:layout_below="@+id/log_in"
+        android:layout_below="@+id/forget"
         android:background="#d1111b"
         android:onClick="sign_up"/>
 
