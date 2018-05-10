@@ -35,7 +35,6 @@ public class feedback extends AppCompatActivity {
         feedback_model data = new feedback_model(date,feed,email);
         database.getReference().child("feedback").child(email).child(date).setValue(data);
         Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(feedback.this, UserHomeActivity.class);
-        startActivity(i);
+        finish();
     }
 }

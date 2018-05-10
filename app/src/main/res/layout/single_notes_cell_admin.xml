@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shapes"
     android:layout_marginTop="10dp"
+    android:id="@+id/cell_layout"
     android:padding="10dp">
 
     <LinearLayout
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:textColor="#1f2b78"
-            android:text="Title :"/>
+            android:text="Subject :"/>
 
         <TextView
             android:layout_width="wrap_content"

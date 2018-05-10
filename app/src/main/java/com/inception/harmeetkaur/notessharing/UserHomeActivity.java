@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,9 +63,11 @@ public class UserHomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                notes_list.clear();
 
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     for (DataSnapshot snap2 : snap.getChildren()) {
+
 
                         notes_details_data data = snap2.getValue(notes_details_data.class);
 
@@ -95,7 +98,7 @@ public class UserHomeActivity extends AppCompatActivity {
 
         String email = auth.getCurrentUser().getEmail();
 
-        database.getReference().child("favorite").child(email.replace(".", "")).addValueEventListener(new ValueEventListener() {
+        database.getReference().child("favorite").child(email.replace(".", "")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 notes_list.clear();
@@ -125,7 +128,7 @@ public class UserHomeActivity extends AppCompatActivity {
 
         String email = auth.getCurrentUser().getEmail();
 
-        database.getReference().child("users").child(email.replace(".", "")).addValueEventListener(new ValueEventListener() {
+        database.getReference().child("users").child(email.replace(".", "")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -169,6 +172,8 @@ public class UserHomeActivity extends AppCompatActivity {
         TextView notes_title, notes_description, time;
         ImageView favorite;
 
+        LinearLayout cell_layout ;
+
         public view_holder(View itemView) {
             super(itemView);
             favorite = itemView.findViewById(R.id.favorite);
@@ -177,6 +182,8 @@ public class UserHomeActivity extends AppCompatActivity {
             notes_description = itemView.findViewById(R.id.notes_description);
 
             time = itemView.findViewById(R.id.notes_date);
+
+            cell_layout = itemView.findViewById(R.id.cell_layout);
         }
     }
 
@@ -216,6 +223,7 @@ public class UserHomeActivity extends AppCompatActivity {
                         Toast.makeText(UserHomeActivity.this, "done", Toast.LENGTH_SHORT).show();
 
                         holder.favorite.setTag("fav");
+
                     }
                     else {
 
@@ -227,6 +235,7 @@ public class UserHomeActivity extends AppCompatActivity {
                         Toast.makeText(UserHomeActivity.this, "done", Toast.LENGTH_SHORT).show();
                         holder.favorite.setTag("not");
 
+
                     }
 
                 }
@@ -236,7 +245,7 @@ public class UserHomeActivity extends AppCompatActivity {
             holder.notes_description.setText(data.description);
 
             holder.time.setText(convertTime(Long.parseLong(data.time)));
-            holder.notes_title.setOnClickListener(new View.OnClickListener() {
+            holder.cell_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -287,7 +296,7 @@ public class UserHomeActivity extends AppCompatActivity {
         sp_editor.clear().commit();
 
 
-        Intent i = new Intent(UserHomeActivity.this, UserLoginActivity.class);
+        Intent i = new Intent(UserHomeActivity.this, ContinueOptions.class);
         startActivity(i);
         finish();
 

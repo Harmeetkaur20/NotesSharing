@@ -279,8 +279,8 @@ public class Search_activity extends AppCompatActivity {
 
 
     public void move_back5(View view) {
-        Intent i = new Intent(Search_activity.this, UserHomeActivity.class);
-        startActivity(i);
+
+        finish();
     }
 
     public void filter(String s) {
@@ -288,7 +288,7 @@ public class Search_activity extends AppCompatActivity {
         filtered_notes_list.clear();
 
         for (notes_details_data data : notes_list) {
-            if (data.title.contains(s)) {
+            if (data.title.toLowerCase().startsWith(s.toLowerCase())) {
                 filtered_notes_list.add(data);
             }
         }

@@ -26,7 +26,7 @@ import java.util.Date;
 
 public class favorite_notes extends AppCompatActivity {
     RecyclerView recyclerView;
-boolean check=true;
+    boolean check = true;
     ArrayList<notes_details_data> notes_list;
     ArrayList<String> fav_notes_list;
 
@@ -54,6 +54,7 @@ boolean check=true;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                notes_list.clear();
 
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     for (DataSnapshot snap2 : snap.getChildren()) {
@@ -62,11 +63,10 @@ boolean check=true;
 
                         if (data.status.equals("a")) {
 
-                            if (fav_notes_list.contains(snap2.getKey()))
-                            {
-                            notes_details_data data_with_time = new notes_details_data(data.title, data.description, data.department, data.session, data.type, snap2.getKey(), data.status);
-                            notes_list.add(data_with_time);
-                        }
+                            if (fav_notes_list.contains(snap2.getKey())) {
+                                notes_details_data data_with_time = new notes_details_data(data.title, data.description, data.department, data.session, data.type, snap2.getKey(), data.status);
+                                notes_list.add(data_with_time);
+                            }
                         }
 
                     }
@@ -84,26 +84,27 @@ boolean check=true;
 
         });
     }
-    public void get_fav_notes()
-    {
+
+    public void get_fav_notes() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        String email =  auth.getCurrentUser().getEmail();
+        String email = auth.getCurrentUser().getEmail();
 
-        database.getReference().child("favorite").child(email.replace(".","")).addValueEventListener(new ValueEventListener() {
+        database.getReference().child("favorite").child(email.replace(".", "")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-              for(DataSnapshot data : dataSnapshot.getChildren() )
-              {
+                fav_notes_list.clear();
 
-                  fav fav_key= data.getValue(fav.class);
-                  fav_notes_list.add(fav_key.key);
-              }
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
 
-              get_department();
+                    fav fav_key = data.getValue(fav.class);
+                    fav_notes_list.add(fav_key.key);
+                }
+
+                get_department();
 
             }
 
@@ -114,19 +115,19 @@ boolean check=true;
         });
 
     }
-    private void get_department()
-    {
+
+    private void get_department() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        String email =  auth.getCurrentUser().getEmail();
+        String email = auth.getCurrentUser().getEmail();
 
-        database.getReference().child("users").child(email.replace(".","")).addValueEventListener(new ValueEventListener() {
+        database.getReference().child("users").child(email.replace(".", "")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String departmentSession =  dataSnapshot.child("department").getValue().toString()+"_"+dataSnapshot.child("session").getValue().toString();
+                String departmentSession = dataSnapshot.child("department").getValue().toString() + "_" + dataSnapshot.child("session").getValue().toString();
 
                 get_data_from_firebase(departmentSession);
 
@@ -139,14 +140,20 @@ boolean check=true;
         });
 
     }
-    public class view_holder extends RecyclerView.ViewHolder
-    {
 
-        TextView notes_title , notes_description , time ;
+    public void move_back8(View view) {
+        Intent i = new Intent(favorite_notes.this, UserHomeActivity.class);
+        startActivity(i);
+    }
+
+    public class view_holder extends RecyclerView.ViewHolder {
+
+        TextView notes_title, notes_description, time;
         ImageView favorite;
+
         public view_holder(View itemView) {
             super(itemView);
-            favorite=itemView.findViewById(R.id.favorite);
+            favorite = itemView.findViewById(R.id.favorite);
             notes_title = itemView.findViewById(R.id.notes_title);
 
             notes_description = itemView.findViewById(R.id.notes_description);
@@ -156,27 +163,22 @@ boolean check=true;
     }
 
 
-    public class Adapter extends RecyclerView.Adapter<favorite_notes.view_holder>
-    {
+    public class Adapter extends RecyclerView.Adapter<favorite_notes.view_holder> {
 
         @Override
         public favorite_notes.view_holder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new view_holder(LayoutInflater.from(favorite_notes.this).inflate(R.layout.single_notes_cell , parent , false));
+            return new view_holder(LayoutInflater.from(favorite_notes.this).inflate(R.layout.single_notes_cell, parent, false));
         }
 
 
-
         @Override
-        public void onBindViewHolder(final favorite_notes.view_holder holder, int position)
-        {
+        public void onBindViewHolder(final favorite_notes.view_holder holder, int position) {
 
 
             final notes_details_data data = notes_list.get(position);
-            if (fav_notes_list.contains(data.time))
-            {
+            if (fav_notes_list.contains(data.time)) {
                 holder.favorite.setImageDrawable(getResources().getDrawable(R.drawable.star));
-            }
-            else {
+            } else {
                 holder.favorite.setImageDrawable(getResources().getDrawable(R.drawable.star_blank));
             }
             holder.notes_title.setText(data.title);
@@ -188,8 +190,7 @@ boolean check=true;
                 @Override
                 public void onClick(View view) {
 
-                    if(data.type.equals("IMAGE"))
-                    {
+                    if (data.type.equals("IMAGE")) {
                         Intent i = new Intent(favorite_notes.this, Show_images_notes.class);
 
                         i.putExtra("images_key", data.time);
@@ -197,20 +198,18 @@ boolean check=true;
                         startActivity(i);
                     }
 
-                    if(data.type.equals("PDF"))
-                    {
-                        Intent i = new Intent(favorite_notes.this , ShowPdfActivity.class);
+                    if (data.type.equals("PDF")) {
+                        Intent i = new Intent(favorite_notes.this, ShowPdfActivity.class);
 
-                        i.putExtra("images_key" , data.time);
+                        i.putExtra("images_key", data.time);
 
                         startActivity(i);
                     }
 
-                    if(data.type.equals("VIDEO"))
-                    {
-                        Intent i = new Intent(favorite_notes.this , ShowVideoActivity.class);
+                    if (data.type.equals("VIDEO")) {
+                        Intent i = new Intent(favorite_notes.this, ShowVideoActivity.class);
 
-                        i.putExtra("images_key" , data.time);
+                        i.putExtra("images_key", data.time);
 
                         startActivity(i);
                     }
@@ -224,8 +223,7 @@ boolean check=true;
         }
     }
 
-    public String convertTime(long yourmilliseconds)
-    {
+    public String convertTime(long yourmilliseconds) {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
         Date resultdate = new Date(yourmilliseconds);
         System.out.println(sdf.format(resultdate));

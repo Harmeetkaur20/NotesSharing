@@ -16,6 +16,13 @@
             android:background="#1f2b78"
             android:id="@+id/below_menu"
             android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_back"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:onClick="move_back8"/>
 
             <TextView
                 android:layout_width="wrap_content"

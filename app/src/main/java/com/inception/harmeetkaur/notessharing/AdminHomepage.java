@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,7 +66,7 @@ public class AdminHomepage extends AppCompatActivity {
 
         String email = auth.getCurrentUser().getEmail();
 
-        database.getReference().child("notes").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("notes").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -113,7 +114,7 @@ public class AdminHomepage extends AppCompatActivity {
 
         sp_editor.clear().commit();
 
-        Intent i = new Intent(AdminHomepage.this,AdminLogin.class);
+        Intent i = new Intent(AdminHomepage.this,ContinueOptions  .class);
         startActivity(i);
 
         finish();
@@ -132,6 +133,8 @@ public class AdminHomepage extends AppCompatActivity {
 
         Button approve_notes ;
 
+        LinearLayout cell_layout ;
+
         public view_holder(View itemView) {
             super(itemView);
 
@@ -148,6 +151,8 @@ public class AdminHomepage extends AppCompatActivity {
             approve_notes = itemView.findViewById(R.id.approve_btn);
 
             user_email = itemView.findViewById(R.id.user_email);
+
+            cell_layout = itemView.findViewById(R.id.cell_layout);
         }
     }
 
@@ -179,7 +184,9 @@ public class AdminHomepage extends AppCompatActivity {
             holder.user_email.setText(data.email);
 
 
-            holder.notes_title.setOnClickListener(new View.OnClickListener() {
+
+
+            holder.cell_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -232,6 +239,8 @@ public class AdminHomepage extends AppCompatActivity {
                         database.getReference().child("notes").child(data.department + "_" + data.session).child(data.email.replace(".", "")).child(data.time).setValue(null);
 
                         Toast.makeText(AdminHomepage.this, "notes deleted", Toast.LENGTH_SHORT).show();
+
+
 
                     }
                     else {

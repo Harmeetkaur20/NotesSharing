@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/notes_4"
-        android:hint="Enter Notes Title"
+        android:hint="Enter Subject"
         android:maxLines="1"
         android:singleLine="true"
         android:padding="5dp" />
